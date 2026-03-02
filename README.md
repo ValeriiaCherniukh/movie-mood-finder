@@ -34,7 +34,7 @@ python manage.py runserver
 ![Home](screenshots/home.png)
 
 ### Mood selection
-![Mood](screenshots/mood1.png)
+![Mood](screenshots/mood2.png)
 
 ### Movie results
 ![Results](screenshots/results.png)
