@@ -28,3 +28,16 @@ A web application that recommends movies based on the user's mood.
 python manage.py migrate
 python manage.py runserver
 ```
+## Screenshots
+
+### Home
+![Home](screenshots/home.png)
+
+### Mood selection
+![Mood](screenshots/mood1.png)
+
+### Movie results
+![Results](screenshots/results.png)
+
+### My list
+![My list](screenshots/mylist.png)
