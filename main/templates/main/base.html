@@ -1,0 +1,76 @@
+{% load static %}
+{% load i18n %}
+{% with request.resolver_match.url_name as current %}
+
+{% get_current_language as LANGUAGE_CODE %}
+<!doctype html>
+<html lang="{{ LANGUAGE_CODE }}">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}AI Movie Night{% endblock %}</title>
+  <link rel="stylesheet" href="{% static 'main/css/styles.css' %}">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+  {% block extra_head %}{% endblock %}
+</head>
+
+<body>
+
+<header class="site-header">
+  <div class="logo">AI Movie Night</div>
+<nav class="nav">
+  <a href="{% url 'home' %}" class="{% if current == 'home' %}active{% endif %}">Home</a>
+  <a href="{% url 'mood' %}" class="{% if current == 'mood' %}active{% endif %}">Mood</a>
+  <a href="{% url 'results' %}" class="{% if current == 'results' %}active{% endif %}">Results</a>
+
+  {% if user.is_authenticated %}
+    <a href="{% url 'my_lists' %}" class="{% if current == 'my_lists' %}active{% endif %}">My list</a>
+    <a href="#" class="nav-logout" id="logout-btn">Logout</a>
+  {% else %}
+    <span class="nav-auth">
+      <a href="{% url 'login' %}" class="{% if current == 'login' %}active{% endif %}">Login</a>
+      <span class="slash">/</span>
+      <a href="{% url 'register' %}" class="{% if current == 'register' %}active{% endif %}">Register</a>
+    </span>
+  {% endif %}
+</nav>
+{% endwith %}
+</header>
+
+<main class="page">
+  {% block content %}{% endblock %}
+</main>
+
+{% block scripts %}{% endblock %}
+<!-- Logout modal -->
+<div id="logout-modal" class="modal hidden">
+  <div class="modal-card">
+    <h3>Sign out?</h3>
+    <p>Are you sure you want to sign out right now?</p>
+
+    <div class="modal-actions">
+      <button id="cancel-logout">Cancel</button>
+      <a href="{% url 'logout' %}" class="confirm-logout">Yes, sign out</a>
+    </div>
+  </div>
+</div>
+
+<script>
+  const logoutBtn = document.getElementById("logout-btn");
+  const modal = document.getElementById("logout-modal");
+  const cancelBtn = document.getElementById("cancel-logout");
+
+  if (logoutBtn) {
+    logoutBtn.addEventListener("click", (e) => {
+      e.preventDefault();
+      modal.classList.remove("hidden");
+    });
+  }
+
+  cancelBtn?.addEventListener("click", () => {
+    modal.classList.add("hidden");
+  });
+</script>
+
+</body>
+</html>

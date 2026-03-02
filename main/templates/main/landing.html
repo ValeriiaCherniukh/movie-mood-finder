@@ -1,0 +1,21 @@
+{% extends "main/base.html" %}
+{% load i18n %}
+{% block title %}Welcome{% endblock %}
+
+{% block content %}
+  <section class="hero">
+    <h1 class="hero__title">Let’s find the perfect movie for your evening</h1>
+
+    <a class="btn btn--primary btn--pulse" href="{% url 'mood' %}">
+      Pick a movie
+    </a>
+  </section>
+{% endblock %}
+
+<form action="{% url 'set_language' %}" method="post">
+  {% csrf_token %}
+  <input name="next" type="hidden" value="{{ request.path }}">
+
+  <button name="language" value="en">EN</button>
+  <button name="language" value="uk">UA</button>
+</form>

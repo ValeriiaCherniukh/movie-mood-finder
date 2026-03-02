@@ -1,0 +1,93 @@
+{% extends "main/base.html" %}
+{% block title %}My list{% endblock %}
+
+{% block content %}
+<div class="lists-wrap">
+
+  <div class="lists-head">
+    <h1 class="lists-title">My list</h1>
+
+    <form class="add-form" method="post" action="{% url 'add_to_list' %}">
+      {% csrf_token %}
+
+      <select name="title_id" required>
+        <option value="" disabled selected>Add title…</option>
+        {% for t in available_titles %}
+          <option value="{{ t.id }}">{{ t.name }}</option>
+        {% empty %}
+          <option disabled>No more titles</option>
+        {% endfor %}
+      </select>
+
+      <select name="status">
+        {% for key, label in tabs %}
+          <option value="{{ key }}">{{ label }}</option>
+        {% endfor %}
+      </select>
+
+      <button type="submit" class="btn-soft">Add</button>
+    </form>
+  </div>
+
+  <div class="tabs">
+    {% for key, label in tabs %}
+      <a href="?status={{ key }}"
+         class="tab {% if key == active %}tab-active{% endif %}">
+        {{ label }}
+      </a>
+    {% endfor %}
+  </div>
+
+  {% if items %}
+    <div class="mylist-grid">
+
+      {% for ut in items %}
+        <div class="mylist-card">
+
+          {% if ut.title.poster_path %}
+            <img
+              src="https://image.tmdb.org/t/p/w342{{ ut.title.poster_path }}"
+              alt="{{ ut.title.name }}"
+              class="mylist-poster"
+            >
+          {% else %}
+            <div class="mylist-poster mylist-poster--empty"></div>
+          {% endif %}
+
+          <div class="mylist-body">
+            <h3 class="mylist-title">{{ ut.title.name }}</h3>
+            <span class="mylist-status">{{ ut.get_status_display }}</span>
+
+            <div class="mylist-actions">
+
+              <form method="post" action="{% url 'update_status' ut.id %}">
+                {% csrf_token %}
+                <select name="status" onchange="this.form.submit()" class="mylist-select">
+                  {% for key, label in tabs %}
+                    <option value="{{ key }}" {% if ut.status == key %}selected{% endif %}>
+                      {{ label }}
+                    </option>
+                  {% endfor %}
+                </select>
+              </form>
+
+              <form method="post" action="{% url 'remove_from_list' ut.id %}">
+                {% csrf_token %}
+                <button type="submit" class="mylist-remove">✕</button>
+              </form>
+
+            </div>
+          </div>
+
+        </div>
+      {% endfor %}
+
+    </div>
+  {% else %}
+    <p class="mylist-empty">
+      Empty. Like my will to watch 3-hour dramas today.
+    </p>
+  {% endif %}
+
+</div>
+{% endblock %}

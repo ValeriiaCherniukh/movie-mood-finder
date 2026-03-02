@@ -1,0 +1,89 @@
+{% extends "main/base.html" %}
+{% load i18n %}
+{% load dict_extras %}
+
+
+{% block title %}Results{% endblock %}
+
+{% block content %}
+<section class="results">
+  <h1 class="results__title">{% trans "Your movie picks" %}</h1>
+
+  {% if moods %}
+    <div class="results__moods">
+      {% for m in moods %}
+        <span class="chip chip--selected">{{ m }}</span>
+      {% endfor %}
+    </div>
+  {% endif %}
+
+  <div class="cards">
+    {% for movie in movies %}
+      <article class="card">
+        {% if movie.poster_url %}
+          <div class="card__posterWrap">
+            <img class="card__poster" src="{{ movie.poster_url }}" alt="{{ movie.title }}">
+          </div>
+        {% endif %}
+
+        <div class="card__body">
+          <h2 class="card__title">
+            {{ movie.title }}{% if movie.year %} ({{ movie.year }}){% endif %}
+          </h2>
+
+            {% if saved_map|get_item:movie.id %}
+              <span class="badge">
+                Saved · {{ saved_map|get_item:movie.id }}
+              </span>
+            {% endif %}
+
+          {% if movie.rating %}
+            <p class="card__meta">{% trans "Rating" %}: {{ movie.rating }}</p>
+          {% endif %}
+
+          {% if user.is_authenticated %}
+            <form method="post" action="{% url 'add_tmdb_to_list' %}" class="save-form">
+              {% csrf_token %}
+               <input type="hidden" name="next" value="{{ request.build_absolute_uri }}">
+               <input type="hidden" name="tmdb_id" value="{{ movie.id }}">
+               <input type="hidden" name="name" value="{{ movie.title }}">
+               <input type="hidden" name="description" value="{{ movie.overview|default:'' }}">
+               <input type="hidden" name="poster_path" value="{{ movie.poster_path|default:'' }}">
+
+               <div class="save-controls">
+                 <select name="status" class="save-select">
+                   <option value="planned">Planned</option>
+                   <option value="watching">Watching</option>
+                   <option value="watched">Watched</option>
+                   <option value="liked">Liked</option>
+                   <option value="disliked">Disliked</option>
+                 </select>
+
+               <button type="submit" class="btn btn--soft">
+                   Add to My list
+               </button>
+              </div>
+             </form>
+          {% else %}
+             <a href="{% url 'login' %}" class="btn-soft">Login to save</a>
+          {% endif %}
+
+
+          <p class="card__text">{{ movie.overview|default:_("No description available.") }}</p>
+        </div>
+      </article>
+    {% endfor %}
+  </div>
+
+{% if tmdb_attribution %}
+  <p class="tmdb-note">
+    This product uses the TMDb API but is not endorsed or certified by TMDb.
+  </p>
+{% endif %}
+
+<div class="results__actions">
+  <a class="btn btn--wide btn--pulse" href="{% url 'mood' %}">
+    Pick again
+  </a>
+</div>
+{% endblock %}

@@ -1,0 +1,52 @@
+{% extends "main/base.html" %}
+{% load static %}
+
+{% block title %}Mood — AI Movie Night{% endblock %}
+
+{% block content %}
+<section class="mood">
+
+  <a href="{% url 'home' %}" class="btn btn--back">Back</a>
+
+  <h1 class="mood__title">How are you feeling?</h1>
+
+  <div class="chips">
+    <button type="button" class="chip">Background watching</button>
+    <button type="button" class="chip">Lost</button>
+    <button type="button" class="chip">Calm</button>
+    <button type="button" class="chip">Sad</button>
+    <button type="button" class="chip">Overthinking</button>
+    <button type="button" class="chip">Anxious</button>
+    <button type="button" class="chip">Heartbroken</button>
+    <button type="button" class="chip">Dark humor</button>
+    <button type="button" class="chip">Happy</button>
+    <button type="button" class="chip">Wholesome</button>
+    <button type="button" class="chip">Thoughtful</button>
+    <button type="button" class="chip">Emotional</button>
+    <button type="button" class="chip">Sick</button>
+    <button type="button" class="chip">Nostalgic</button>
+    <button type="button" class="chip">Cozy evening</button>
+    <button type="button" class="chip">Tired</button>
+    <button type="button" class="chip">Excited</button>
+    <button type="button" class="chip">Romantic</button>
+    <button type="button" class="chip">Inspired</button>
+    <button type="button" class="chip">Escapism</button>
+    <button type="button" class="chip">Lonely</button>
+  </div>
+
+ <button type="button"
+        class="btn btn--wide"
+        id="continueBtn"
+        disabled
+        data-results-url="{% url 'results' %}">
+  Continue
+</button>
+
+
+</section>
+{% endblock %}
+
+{% block scripts %}
+<script src="{% static 'main/js/mood.js' %}"></script>
+{% endblock %}
+

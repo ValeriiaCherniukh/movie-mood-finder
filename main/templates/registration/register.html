@@ -1,0 +1,37 @@
+{% extends "main/base.html" %}
+{% block content %}
+
+<div class="auth">
+  <div class="auth-card">
+    <h1 class="auth-title">Register</h1>
+    <p class="auth-subtitle">Create an account in 30 seconds. (Or less. Don’t panic.)</p>
+
+    {% if form.errors %}
+      <div class="auth-alert">
+        Something doesn’t look right. Fix the fields and try again.
+      </div>
+    {% endif %}
+
+    <form method="post" class="auth-form">
+      {% csrf_token %}
+
+      <label class="auth-label" for="id_username">Username</label>
+      {{ form.username }}
+
+      <label class="auth-label" for="id_password1">Password</label>
+      {{ form.password1 }}
+
+      <label class="auth-label" for="id_password2">Repeat password</label>
+      {{ form.password2 }}
+
+      <button type="submit" class="auth-btn">Create account</button>
+    </form>
+
+    <div class="auth-footer">
+      <span>Already have an account?</span>
+      <a class="auth-link" href="{% url 'login' %}">Login</a>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,18 @@
+{% extends "main/base.html" %}
+
+{% block title %}AI Movie Night{% endblock %}
+
+{% block content %}
+<section class="hero">
+  <h1 class="hero__title">Let’s find the perfect movie for your evening</h1>
+  <a class="btn btn--wide btn--pulse" href="{% url 'mood' %}">Pick a movie</a>
+</section>
+{% endblock %}
+
+{% if user.is_authenticated %}
+  <a class="btn" href="{% url 'my_lists' %}">Мої списки</a>
+  <a class="btn" href="{% url 'logout' %}">Вийти</a>
+{% else %}
+  <a class="btn" href="{% url 'login' %}">Увійти</a>
+  <a class="btn" href="{% url 'register' %}">Зареєструватись</a>
+{% endif %}
